@@ -1,12 +1,12 @@
 from time import sleep
 from relay import Relay
 from temperatur87 import LMT87
-from float_switch import Flydekontakt  # Import af flydekontakten
+from float_switch import Flydekontakt
 
 # Konfiguration af pins
-PIN_LMT87 = 35
-PIN_RELAY = 26
-PIN_FLOAT = 34  # GPIO til flydekontakten
+PIN_LMT87 = 35	# ADC-GPIO temperatursensor
+PIN_RELAY = 26	# GPIO relæ
+PIN_FLOAT = 34  # GPIO flydekontakten
 
 # Kalibreringsværdier for LMT87
 T1, ADC1 = 25.2, 2659
@@ -16,7 +16,7 @@ def main():
     """Hovedfunktion der overvåger temperatur og styrer relæet."""
     relay = Relay(PIN_RELAY)
     sensor = LMT87(PIN_LMT87)
-    flyder = Flydekontakt(PIN_FLOAT)  # Initialiser flydekontakten
+    flyder = Flydekontakt(PIN_FLOAT)
 
     sensor.calibrate(T1, ADC1, T2, ADC2)
 
@@ -44,7 +44,7 @@ def main():
             if aktuel_vandstatus:
                 print("💧 Flydekontakt aktiveret – vandniveau er LAVT.")
             else:
-                print("⚠️  Flydekontakt deaktiveret – vandniveau er HØJT.")
+                print("⚠️ Flydekontakt deaktiveret – vandniveau er HØJT.")
 
         print("Temperatur: {:.2f}°C | Relæ: {} | Vandniveau: {}".format(
             temperature, relay_status, vand_status))
@@ -55,3 +55,4 @@ def main():
 # Hvis filen køres direkte, start hovedfunktionen
 if __name__ == "__main__":
     main()
+
