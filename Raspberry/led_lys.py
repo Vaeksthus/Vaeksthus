@@ -35,7 +35,7 @@ def show_time():
     print(current_time)
 
 #schedule from 9 - 20
-schedule.every().day.at("09:05").do(dags_lys)
+schedule.every().day.at("10:32").do(dags_lys)
 schedule.every().day.at("20:00").do(dags_lys_stop)
 schedule.every(10).seconds.do(show_time)
 
@@ -52,14 +52,15 @@ try:
 
             print("LDR Data:", data)
 
-            duty_cycle = int((data/700)*1000000)
+            duty_cycle = int((data/700)*600000)
+            duty_cycle = max(0, min(duty_cycle,600000))
             pi.hardware_PWM(pwm_pin,frequency,duty_cycle)
 
-            if duty_cycle < 250000:
+            if duty_cycle < 150000:
                 pi.hardware_PWM(pwm_pin, 0, 0)
 
 
-            print(duty_cycle)
+            print("dutycycle: ",duty_cycle)
 
         time.sleep(1)
 
